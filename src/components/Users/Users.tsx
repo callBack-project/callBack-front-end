@@ -48,10 +48,10 @@ const Users = () => {
       try {
         let response: any = await axios.get('http://localhost:8080/api/users');
 
-        await dispatch({ type: ACTIONS.SUCCESS, data: response.data });
+        dispatch({ type: ACTIONS.SUCCESS, data: response.data });
         return;
       } catch (error) {
-        await dispatch({ type: ACTIONS.ERROR, error: error.message || error });
+        dispatch({ type: ACTIONS.ERROR, error: error.message || error });
       }
     }
     getUsers();
