@@ -45,13 +45,14 @@ const Users = () => {
   useEffect(() => {
     dispatch({ type: ACTIONS.GET_USERS });
     const getUsers = async () => {
-      let response: any = await axios.get('http://localhost:8080/api/users');
-      console.log(response)
-      if (response.status == 200) {
-        dispatch({ type: ACTIONS.SUCCESS, data: response.data });
+      try {
+        let response: any = await axios.get('http://localhost:8080/api/users');
+
+        await dispatch({ type: ACTIONS.SUCCESS, data: response.data });
         return;
+      } catch (error) {
+        await dispatch({ type: ACTIONS.ERROR, error: error.message || error });
       }
-      dispatch({ type: ACTIONS.ERROR, error: response.error });
     }
     getUsers();
   }, [])
