@@ -1,45 +1,12 @@
-import React, { useReducer, useEffect } from 'react'
+import { useReducer, useEffect } from 'react'
 import axios from 'axios';
-
-const ACTIONS = {
-  GET_EVENTS: 'GET_EVENTS',
-  SUCCESS: 'success',
-  ERROR: 'error'
-}
-
-const eventDetailsReducer = (state: any, action: any) => {
-  switch (action.type) {
-    case ACTIONS.GET_EVENTS: {
-      return {
-        ...state,
-        loading: true,
-      }
-    }
-    case ACTIONS.SUCCESS: {
-      return {
-        ...state,
-        loading: false,
-        eventDetails: action.data,
-      }
-    }
-    case ACTIONS.ERROR: {
-      return {
-        ...state,
-        loading: false,
-        error: action.error,
-      }
-    }
-  }
-};
-
-const initialState = {
-  eventDetails: [],
-  loading: false,
-  error: null,
-}
+import EventsForm from './EventsForm'
+import {eventDetailsReducer, ACTIONS, initialState} from './EventsReducer'
 
 
-const Events = () => {
+
+
+const EventsComponent = () => {
   const [state, dispatch] = useReducer(eventDetailsReducer, initialState);
   const { eventDetails, loading, error } = state;
   useEffect(() => {
@@ -59,6 +26,7 @@ const Events = () => {
   return (
     <div>
       <h1>Events Component</h1>
+      <EventsForm/>
       {loading ? (
         <p>loading...</p>
       ) : error ? (
@@ -76,4 +44,4 @@ const Events = () => {
   ) 
 }
 
-export default Events
+export default EventsComponent
