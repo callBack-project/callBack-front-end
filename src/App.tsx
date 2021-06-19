@@ -2,7 +2,7 @@ import React from 'react';
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 import Users from './components/Users/Users'
 import Jobs from './components/Jobs/Jobs'
-import Companies from './components/companies/Companies'
+import Companies from './components/Companies/Companies'
 
 import './App.css';
 
