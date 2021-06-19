@@ -3,7 +3,7 @@ import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 import Users from './components/Users/Users'
 import Jobs from './components/Jobs/Jobs'
 import Companies from './components/Companies/Companies'
-import Events from './components/Events/Events'
+import Events from './Pages/Events'
 
 import './App.css';
 
