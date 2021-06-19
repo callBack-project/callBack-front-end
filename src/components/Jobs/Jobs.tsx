@@ -2,14 +2,14 @@ import { useReducer, useEffect } from 'react';
 import axios from 'axios';
 
 const ACTIONS = {
-  GET_COMPANIES: 'GET_COMPANIES',
+  GET_JOBS: 'GET_JOBS',
   SUCCESS: 'success',
   ERROR: 'error'
 }
 
-const companiesDetailsReducer = (state: any, action: any) => {
+const jobsDetailsReducer = (state: any, action: any) => {
   switch (action.type) {
-    case ACTIONS.GET_COMPANIES: {
+    case ACTIONS.GET_JOBS: {
       return {
         ...state,
         loading: true,
@@ -19,7 +19,7 @@ const companiesDetailsReducer = (state: any, action: any) => {
       return {
         ...state,
         loading: false,
-        companiesDetails: action.data,
+        jobsDetails: action.data,
       }
     }
     case ACTIONS.ERROR: {
@@ -33,20 +33,20 @@ const companiesDetailsReducer = (state: any, action: any) => {
 };
 
 const initialState = {
-  companiesDetails: [],
+  jobsDetails: [],
   loading: false,
   error: null,
 }
 
 
-const Companies = () => {
-  const [state, dispatch] = useReducer(companiesDetailsReducer, initialState);
-  const { companiesDetails, loading, error } = state;
+const Jobs = () => {
+  const [state, dispatch] = useReducer(jobsDetailsReducer, initialState);
+  const { jobsDetails, loading, error } = state;
   useEffect(() => {
-    dispatch({ type: ACTIONS.GET_COMPANIES });
-    const getCompanies = async () => {
+    dispatch({ type: ACTIONS.GET_JOBS });
+    const getJobs = async () => {
       try {
-        let response: any = await axios.get('http://localhost:8080/api/companies');
+        let response: any = await axios.get('http://localhost:8080/api/jobs');
 
         dispatch({ type: ACTIONS.SUCCESS, data: response.data });
         return;
@@ -54,26 +54,26 @@ const Companies = () => {
         dispatch({ type: ACTIONS.ERROR, error: error.message || error });
       }
     }
-    getCompanies();
+    getJobs();
   }, [])
   return (
     <div>
-      <h1>Companies Component</h1>
+      <h1>Jobs Component</h1>
       {loading ? (
         <p>loading...</p>
       ) : error ? (
           <p>{error}</p>
         ) : (
             <ul>
-              {companiesDetails.map((company: any) => (
-                <li key={company.id}>
-                  <h1>{company.name}</h1>
+              {jobsDetails.map((job: any) => (
+                <li key={job.id}>
+                  <h1>{job.position}</h1>
                 </li>
               ))}
             </ul>
       )}
     </div>
-  ) 
+  )
 }
 
-export default Companies
+export default Jobs
