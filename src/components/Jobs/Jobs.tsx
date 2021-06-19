@@ -1,4 +1,4 @@
-import React, { useReducer, useEffect } from 'react'
+import { useReducer, useEffect } from 'react';
 import axios from 'axios';
 
 const ACTIONS = {
@@ -7,7 +7,7 @@ const ACTIONS = {
   ERROR: 'error'
 }
 
-const jobDetailsReducer = (state: any, action: any) => {
+const jobsDetailsReducer = (state: any, action: any) => {
   switch (action.type) {
     case ACTIONS.GET_JOBS: {
       return {
@@ -19,7 +19,7 @@ const jobDetailsReducer = (state: any, action: any) => {
       return {
         ...state,
         loading: false,
-        userDetails: action.data,
+        jobsDetails: action.data,
       }
     }
     case ACTIONS.ERROR: {
@@ -33,15 +33,15 @@ const jobDetailsReducer = (state: any, action: any) => {
 };
 
 const initialState = {
-  jobDetails: [],
+  jobsDetails: [],
   loading: false,
   error: null,
 }
 
 
 const Jobs = () => {
-  const [state, dispatch] = useReducer(jobDetailsReducer, initialState);
-  const { jobDetails, loading, error } = state;
+  const [state, dispatch] = useReducer(jobsDetailsReducer, initialState);
+  const { jobsDetails, loading, error } = state;
   useEffect(() => {
     dispatch({ type: ACTIONS.GET_JOBS });
     const getJobs = async () => {
@@ -65,7 +65,7 @@ const Jobs = () => {
           <p>{error}</p>
         ) : (
             <ul>
-              {jobDetails.map((job: any) => (
+              {jobsDetails.map((job: any) => (
                 <li key={job.id}>
                   <h1>{job.position}</h1>
                 </li>
