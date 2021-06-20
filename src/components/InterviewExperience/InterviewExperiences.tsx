@@ -2,14 +2,14 @@ import { useReducer, useEffect } from 'react';
 import axios from 'axios';
 
 const ACTIONS = {
-  GET_COMPANIES: 'GET_COMPANIES',
+  GET_INTERVIEW_EXPERIENCES: 'GET_INTERVIEW_EXPERIENCES',
   SUCCESS: 'success',
   ERROR: 'error',
 };
 
-const companiesDetailsReducer = (state: any, action: any) => {
+const interviewExperiencesDetailsReducer = (state: any, action: any) => {
   switch (action.type) {
-    case ACTIONS.GET_COMPANIES: {
+    case ACTIONS.GET_INTERVIEW_EXPERIENCES: {
       return {
         ...state,
         loading: true,
@@ -33,20 +33,23 @@ const companiesDetailsReducer = (state: any, action: any) => {
 };
 
 const initialState = {
-  companiesDetails: [],
+  interviewExperiencesDetails: [],
   loading: false,
   error: null,
 };
 
-const Companies = () => {
-  const [state, dispatch] = useReducer(companiesDetailsReducer, initialState);
-  const { companiesDetails, loading, error } = state;
+const InterviewExperiences = () => {
+  const [state, dispatch] = useReducer(
+    interviewExperiencesDetailsReducer,
+    initialState
+  );
+  const { interviewExperiencesDetails, loading, error } = state;
   useEffect(() => {
-    dispatch({ type: ACTIONS.GET_COMPANIES });
-    const getCompanies = async () => {
+    dispatch({ type: ACTIONS.GET_INTERVIEW_EXPERIENCES });
+    const getInterviewExperiences = async () => {
       try {
         let response: any = await axios.get(
-          'http://localhost:8080/api/companies'
+          'http://localhost:8080/api/interview-experiences'
         );
 
         dispatch({ type: ACTIONS.SUCCESS, data: response.data });
@@ -55,20 +58,20 @@ const Companies = () => {
         dispatch({ type: ACTIONS.ERROR, error: error.message || error });
       }
     };
-    getCompanies();
+    getInterviewExperiences();
   }, []);
   return (
     <div>
-      <h1>Companies Component</h1>
+      <h1>Interview Experiences Component</h1>
       {loading ? (
         <p>loading...</p>
       ) : error ? (
         <p>{error}</p>
       ) : (
         <ul>
-          {companiesDetails.map((company: any) => (
-            <li key={company.id}>
-              <h1>{company.name}</h1>
+          {interviewExperiencesDetails.map((experience: any) => (
+            <li key={experience.id}>
+              <h1>{experience.company}</h1>
             </li>
           ))}
         </ul>
@@ -77,4 +80,4 @@ const Companies = () => {
   );
 };
 
-export default Companies;
+export default InterviewExperiences;
