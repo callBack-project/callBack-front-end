@@ -2,7 +2,7 @@ import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import Users from './components/Users/Users';
 import Jobs from './components/Jobs/Jobs';
 import Companies from './components/Companies/Companies';
-import InterviewExperiences from './components/InterviewExperience/InterviewExperiences';
+import InterviewExperiences from './components/InterviewExperiences/InterviewExperiences';
 import Events from './Pages/Events';
 
 import './App.css';
