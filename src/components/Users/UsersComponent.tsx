@@ -1,4 +1,4 @@
-import React, { useReducer, useEffect } from 'react'
+import { useReducer, useEffect } from 'react'
 import axios from 'axios';
 
 const ACTIONS = {
@@ -39,7 +39,7 @@ const initialState = {
 }
 
 
-const Users = () => {
+const UsersComponent = () => {
   const [state, dispatch] = useReducer(userDetailsReducer, initialState);
   const { userDetails, loading, error } = state;
   useEffect(() => {
@@ -76,4 +76,4 @@ const Users = () => {
   ) 
 }
 
-export default Users
+export default UsersComponent

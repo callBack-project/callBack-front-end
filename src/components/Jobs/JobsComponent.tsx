@@ -39,7 +39,7 @@ const initialState = {
 }
 
 
-const Jobs = () => {
+const JobsComponent = () => {
   const [state, dispatch] = useReducer(jobsDetailsReducer, initialState);
   const { jobsDetails, loading, error } = state;
   useEffect(() => {
@@ -76,4 +76,4 @@ const Jobs = () => {
   )
 }
 
-export default Jobs
+export default JobsComponent

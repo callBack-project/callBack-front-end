@@ -38,7 +38,7 @@ const initialState = {
   error: null,
 };
 
-const Companies = () => {
+const CompaniesComponent = () => {
   const [state, dispatch] = useReducer(companiesDetailsReducer, initialState);
   const { companiesDetails, loading, error } = state;
   useEffect(() => {
@@ -77,4 +77,4 @@ const Companies = () => {
   );
 };
 
-export default Companies;
+export default CompaniesComponent;
