@@ -3,9 +3,6 @@ import axios from 'axios';
 import EventsForm from './EventsForm'
 import {eventDetailsReducer, ACTIONS, initialState} from './EventsReducer'
 
-
-
-
 const EventsComponent = () => {
   const [state, dispatch] = useReducer(eventDetailsReducer, initialState);
   const { eventDetails, loading, error } = state;
