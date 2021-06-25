@@ -9,9 +9,11 @@ import {eventDetailsReducer, ACTIONS, initialState} from './EventsReducer'
 const EventsComponent = () => {
   const [state, dispatch] = useReducer(eventDetailsReducer, initialState);
   const { eventDetails, loading, error } = state;
+
   useEffect(() => {
     dispatch({ type: ACTIONS.GET_EVENTS });
     const getEvents = async () => {
+
       try {
         let response: any = await axios.get('http://localhost:8080/api/events');
 
@@ -23,10 +25,27 @@ const EventsComponent = () => {
     }
     getEvents();
   }, [])
+
+  const postEventSubmitHandler = ( data: any) => {
+    const postEvent = async () => {
+
+      try {
+        let response: any = await axios.post('http://localhost:8080/api/events', data);
+        
+        dispatch({ type: ACTIONS.ADD_EVENT, data: response.data });
+      } catch (error) {
+        dispatch({ type: ACTIONS.ERROR, error: error.message || error });
+      }
+  }
+    postEvent()
+  }
+
   return (
     <div>
       <h1>Events Component</h1>
-      <EventsForm/>
+      <EventsForm
+        handleSubmit={postEventSubmitHandler}
+      />
       {loading ? (
         <p>loading...</p>
       ) : error ? (
