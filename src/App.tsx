@@ -1,9 +1,9 @@
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
-import Users from './components/Users/Users';
-import Jobs from './components/Jobs/Jobs';
-import Companies from './components/Companies/Companies';
-import InterviewExperiences from './components/InterviewExperiences/InterviewExperiences';
+import Jobs from './Pages/Jobs';
+import Companies from './Pages/Companies';
+import InterviewExperiences from './Pages/InterviewExperiences';
 import Events from './Pages/Events';
+import Users from './Pages/Users'
 
 import './App.css';
 

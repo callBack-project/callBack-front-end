@@ -38,7 +38,7 @@ const initialState = {
   error: null,
 };
 
-const Companies = () => {
+const InterviewExperiencesComponent = () => {
   const [state, dispatch] = useReducer(experienceDetailsReducer, initialState);
   const { experienceDetails, loading, error } = state;
   useEffect(() => {
@@ -101,4 +101,4 @@ const Companies = () => {
   );
 };
 
-export default Companies;
+export default InterviewExperiencesComponent;
