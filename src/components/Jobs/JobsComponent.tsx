@@ -57,7 +57,7 @@ const JobsComponent = () => {
     getJobs();
   }, [])
   return (
-    <div>
+    <div data-testid='jobsComponent'>
       <h1>Jobs Component</h1>
       {loading ? (
         <p>loading...</p>
