@@ -1,8 +1,9 @@
 export const ACTIONS = {
   GET_EVENTS: 'GET_EVENTS',
   ADD_EVENT: "ADD_EVENT",
+  DELETE_EVENT: 'DELETE_EVENT',
   SUCCESS: 'success',
-  ERROR: 'error'
+  ERROR: 'error',
 }
 
 export const eventDetailsReducer = (state: any, action: any) => {
@@ -17,6 +18,13 @@ export const eventDetailsReducer = (state: any, action: any) => {
       return {
         ...state,
         eventDetails: [...state.eventDetails, action.data],
+        loading: false,
+      }
+    }
+    case ACTIONS.DELETE_EVENT: {
+      return {
+        ...state,
+        eventDetails: state.eventDetails.filter((item: any) => item.id !== action.data.id),
         loading: false,
       }
     }
