@@ -37,6 +37,17 @@ const EventsComponent = () => {
     postEvent()
   }
 
+  const deleteEvent = async (id: string) => {
+
+    try {
+      let response: any = await axios.delete(`http://localhost:8080/api/events/${id}`)
+      dispatch({ type: ACTIONS.DELETE_EVENT, data: response.data });
+
+    } catch (error) {
+      dispatch({ type: ACTIONS.ERROR, error: error.message || error });
+    }
+  }
+
   return (
     <div>
       <h1>Events Component</h1>
@@ -51,7 +62,7 @@ const EventsComponent = () => {
             <ul>
               {eventDetails.map((event: any) => (
                 <li key={event.id}>
-                  <h1>{event.name}</h1>
+                  <h1>{event.name} <span><button onClick={()=>deleteEvent(event.id)}>x</button></span></h1>
                 </li>
               ))}
             </ul>
