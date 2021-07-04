@@ -6,7 +6,7 @@ afterEach(() => {
   cleanup()
 })
 
-test('renders JobsComponent', () => {
+test('renders UsersComponent', () => {
   render(<UsersComponent/>)
   const jobElement = screen.getByTestId('usersComponent')
   expect(jobElement).toBeInTheDocument()

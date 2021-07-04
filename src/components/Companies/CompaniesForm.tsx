@@ -7,9 +7,9 @@ const CompaniesForm = () => {
   const [size, setSize] = useState("");
   const [industry, setIndustry] = useState("");
 
-  
+
   return (
-    <div>
+    <div data-testid='companiesForm'>
       <h1>Companies Form</h1>
       <form>
         <label>
@@ -35,7 +35,7 @@ const CompaniesForm = () => {
         <input type="submit" value="Submit"/>
       </form>
     </div>
-    
+
   )
 }
 

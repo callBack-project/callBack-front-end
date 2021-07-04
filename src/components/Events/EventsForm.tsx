@@ -12,7 +12,7 @@ const EventsForm = ( {handleSubmit}: EventsFormProps ) => {
 
   const submitForm = (event: any) => {
     event.preventDefault()
-    
+
     handleSubmit(
       {
       name,
@@ -22,9 +22,9 @@ const EventsForm = ( {handleSubmit}: EventsFormProps ) => {
       date: new Date('Dec 17, 1999 03:00:00')
     })
   }
-  
+
   return (
-    <div>
+    <div data-testid='eventsForm'>
       <h1>Events Form</h1>
       <form onSubmit={(e:any) => submitForm(e)}>
         <label>
@@ -46,7 +46,7 @@ const EventsForm = ( {handleSubmit}: EventsFormProps ) => {
         <input type="submit" value="Submit"/>
       </form>
     </div>
-    
+
   )
 }
 

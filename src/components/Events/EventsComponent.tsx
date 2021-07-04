@@ -28,7 +28,7 @@ const EventsComponent = () => {
 
       try {
         let response: any = await axios.post('http://localhost:8080/api/events', data);
-        
+
         dispatch({ type: ACTIONS.ADD_EVENT, data: response.data });
       } catch (error) {
         dispatch({ type: ACTIONS.ERROR, error: error.message || error });
@@ -38,7 +38,7 @@ const EventsComponent = () => {
   }
 
   return (
-    <div>
+    <div data-testid='eventsComponent'>
       <h1>Events Component</h1>
       <EventsForm
         handleSubmit={postEventSubmitHandler}
@@ -57,7 +57,7 @@ const EventsComponent = () => {
             </ul>
       )}
     </div>
-  ) 
+  )
 }
 
 export default EventsComponent
