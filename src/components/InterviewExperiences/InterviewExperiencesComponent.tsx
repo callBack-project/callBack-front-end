@@ -58,7 +58,7 @@ const InterviewExperiencesComponent = () => {
     getExperiences();
   }, []);
   return (
-    <div>
+    <div data-testid='interviewExperiencesComponent'>
       <h1>Interview Experiences Component</h1>
       {loading ? (
         <p>loading...</p>
