@@ -23,7 +23,7 @@ const CompaniesComponent = () => {
     getCompanies();
   }, []);
   return (
-    <div>
+    <div data-testid='companiesComponent'>
       <h1>Companies Component</h1>
       <CompaniesForm/>
       {loading ? (

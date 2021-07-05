@@ -57,7 +57,7 @@ const UsersComponent = () => {
     getUsers();
   }, [])
   return (
-    <div>
+    <div data-testid='usersComponent'>
       <h1>Users Component</h1>
       {loading ? (
         <p>loading...</p>
@@ -73,7 +73,7 @@ const UsersComponent = () => {
             </ul>
       )}
     </div>
-  ) 
+  )
 }
 
 export default UsersComponent
