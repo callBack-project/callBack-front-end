@@ -22,10 +22,36 @@ const CompaniesComponent = () => {
     };
     getCompanies();
   }, []);
+  
+  const postCompanySubmitHandler = ( data: any) => {
+    const postCompany = async () => {
+
+      try {
+        let response: any = await axios.post('http://localhost:8080/api/companies', data);
+
+        dispatch({ type: ACTIONS.ADD_COMPANY, data: response.data });
+      } catch (error) {
+        dispatch({ type: ACTIONS.ERROR, error: error.message || error });
+      }
+  }
+    postCompany()
+  }
+
+  const deleteCompany = async (id: string) => {
+
+    try {
+      let response: any = await axios.delete(`http://localhost:8080/api/companies/${id}`)
+      dispatch({ type: ACTIONS.DELETE_COMPANY, data: response.data });
+
+    } catch (error) {
+      dispatch({ type: ACTIONS.ERROR, error: error.message || error });
+    }
+  }
+
   return (
     <div data-testid='companiesComponent'>
       <h1>Companies Component</h1>
-      <CompaniesForm/>
+      <CompaniesForm handleSubmit={postCompanySubmitHandler}/>
       {loading ? (
         <p>loading...</p>
       ) : error ? (
@@ -34,7 +60,7 @@ const CompaniesComponent = () => {
         <ul>
           {companiesDetails.map((company: any) => (
             <li key={company.id}>
-              <h1>{company.name}</h1>
+              <h1>{company.name} <span><button onClick={()=>deleteCompany(company.id)}>x</button></span></h1>
             </li>
           ))}
         </ul>
