@@ -1,12 +1,12 @@
 import { useReducer, useEffect } from 'react';
 import axios from 'axios';
 import JobsForm from './JobsForm';
-import { jobsDetailsReducer, ACTIONS, initialState } from './JobsReducer';
+import { jobDetailsReducer, ACTIONS, initialState } from './JobsReducer';
 
 
 const JobsComponent = () => {
-  const [state, dispatch] = useReducer(jobsDetailsReducer, initialState);
-  const { jobsDetails, loading, error } = state;
+  const [state, dispatch] = useReducer(jobDetailsReducer, initialState);
+  const { jobDetails, loading, error } = state;
   useEffect(() => {
     dispatch({ type: ACTIONS.GET_JOBS });
     const getJobs = async () => {
@@ -57,7 +57,7 @@ const JobsComponent = () => {
           <p>{error}</p>
         ) : (
             <ul>
-              {jobsDetails.map((job: any) => (
+              {jobDetails.map((job: any) => (
                 <li key={job.id}>
                   <h1>{job.position} <span><button onClick={()=>deleteJob(job.id)}>x</button></span></h1>
                 </li>

@@ -6,7 +6,7 @@ export const ACTIONS = {
   ERROR: 'error',
 };
 
-export const companiesDetailsReducer = (state: any, action: any) => {
+export const companyDetailsReducer = (state: any, action: any) => {
   switch (action.type) {
     case ACTIONS.GET_COMPANIES: {
       return {
@@ -17,14 +17,14 @@ export const companiesDetailsReducer = (state: any, action: any) => {
     case ACTIONS.ADD_COMPANY: {
       return {
         ...state,
-        companiesDetails: [...state.companiesDetails, action.data],
+        companyDetails: [...state.companyDetails, action.data],
         loading: false,
       }
     }
     case ACTIONS.DELETE_COMPANY: {
       return {
         ...state,
-        companiesDetails: state.companiesDetails.filter((item: any) => item.id !== action.data.id),
+        companyDetails: state.companyDetails.filter((item: any) => item.id !== action.data.id),
         loading: false,
       }
     }
@@ -32,7 +32,7 @@ export const companiesDetailsReducer = (state: any, action: any) => {
       return {
         ...state,
         loading: false,
-        companiesDetails: action.data,
+        companyDetails: action.data,
       };
     }
     case ACTIONS.ERROR: {
@@ -48,7 +48,7 @@ export const companiesDetailsReducer = (state: any, action: any) => {
 };
 
 export const initialState = {
-  companiesDetails: [],
+  companyDetails: [],
   loading: false,
   error: null,
 };

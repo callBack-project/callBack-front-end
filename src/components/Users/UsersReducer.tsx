@@ -17,14 +17,14 @@ export const userDetailsReducer = (state: any, action: any) => {
     case ACTIONS.ADD_USER: {
       return {
         ...state,
-        usersDetails: [...state.usersDetails, action.data],
+        userDetails: [...state.userDetails, action.data],
         loading: false,
       }
     }
     case ACTIONS.DELETE_USER: {
       return {
         ...state,
-        usersDetails: state.usersDetails.filter((item: any) => item.id !== action.data.id),
+        userDetails: state.userDetails.filter((item: any) => item.id !== action.data.id),
         loading: false,
       }
     }
@@ -32,7 +32,7 @@ export const userDetailsReducer = (state: any, action: any) => {
       return {
         ...state,
         loading: false,
-        usersDetails: action.data,
+        userDetails: action.data,
       }
     }
     case ACTIONS.ERROR: {
@@ -48,7 +48,7 @@ export const userDetailsReducer = (state: any, action: any) => {
 };
 
 export const initialState = {
-  usersDetails: [],
+  userDetails: [],
   loading: false,
   error: null,
 }

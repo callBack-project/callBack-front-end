@@ -6,7 +6,7 @@ import { userDetailsReducer, ACTIONS, initialState } from './UsersReducer';
 
 const UsersComponent = () => {
   const [state, dispatch] = useReducer(userDetailsReducer, initialState);
-  const { usersDetails, loading, error } = state;
+  const { userDetails, loading, error } = state;
   useEffect(() => {
     dispatch({ type: ACTIONS.GET_USERS });
     const getUsers = async () => {
@@ -58,7 +58,7 @@ const UsersComponent = () => {
           <p>{error}</p>
         ) : (
             <ul>
-              {usersDetails.map((user: any) => (
+              {userDetails.map((user: any) => (
                 <li key={user.id}>
                   <h1>{user.firstName} <span><button onClick={()=>deleteUser(user.id)}>x</button></span></h1>
                 </li>

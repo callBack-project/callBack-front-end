@@ -6,7 +6,7 @@ export const ACTIONS = {
   ERROR: 'error',
 }
 
-export const jobsDetailsReducer = (state: any, action: any) => {
+export const jobDetailsReducer = (state: any, action: any) => {
   switch (action.type) {
     case ACTIONS.GET_JOBS: {
       return {
@@ -17,14 +17,14 @@ export const jobsDetailsReducer = (state: any, action: any) => {
     case ACTIONS.ADD_JOB: {
       return {
         ...state,
-        jobsDetails: [...state.jobsDetails, action.data],
+        jobDetails: [...state.jobDetails, action.data],
         loading: false,
       }
     }
     case ACTIONS.DELETE_JOB: {
       return {
         ...state,
-        jobsDetails: state.jobsDetails.filter((item: any) => item.id !== action.data.id),
+        jobDetails: state.jobDetails.filter((item: any) => item.id !== action.data.id),
         loading: false,
       }
     }
@@ -32,7 +32,7 @@ export const jobsDetailsReducer = (state: any, action: any) => {
       return {
         ...state,
         loading: false,
-        jobsDetails: action.data,
+        jobDetails: action.data,
       }
     }
     case ACTIONS.ERROR: {
@@ -48,7 +48,7 @@ export const jobsDetailsReducer = (state: any, action: any) => {
 };
 
 export const initialState = {
-  jobsDetails: [],
+  jobDetails: [],
   loading: false,
   error: null,
 }
