@@ -1,49 +1,15 @@
 import { useReducer, useEffect } from 'react';
 import axios from 'axios';
+import InterviewExperienceForm from './InterviewExperiencesForm';
+import { interviewExperienceDetailsReducer, ACTIONS, initialState } from './InterviewExperiencesReducer';
 
-const ACTIONS = {
-  GET_INTERVIEWEXPERIENCES: 'GET_INTERVIEWEXPERIENCES',
-  SUCCESS: 'success',
-  ERROR: 'error',
-};
-
-const experienceDetailsReducer = (state: any, action: any) => {
-  switch (action.type) {
-    case ACTIONS.GET_INTERVIEWEXPERIENCES: {
-      return {
-        ...state,
-        loading: true,
-      };
-    }
-    case ACTIONS.SUCCESS: {
-      return {
-        ...state,
-        loading: false,
-        experienceDetails: action.data,
-      };
-    }
-    case ACTIONS.ERROR: {
-      return {
-        ...state,
-        loading: false,
-        error: action.error,
-      };
-    }
-  }
-};
-
-const initialState = {
-  experienceDetails: [],
-  loading: false,
-  error: null,
-};
 
 const InterviewExperiencesComponent = () => {
-  const [state, dispatch] = useReducer(experienceDetailsReducer, initialState);
-  const { experienceDetails, loading, error } = state;
+  const [state, dispatch] = useReducer(interviewExperienceDetailsReducer, initialState);
+  const { interviewExperienceDetails, loading, error } = state;
   useEffect(() => {
-    dispatch({ type: ACTIONS.GET_INTERVIEWEXPERIENCES });
-    const getExperiences = async () => {
+    dispatch({ type: ACTIONS.GET_INTERVIEW_EXPERIENCES });
+    const getInterviewExperiences = async () => {
       try {
         let response: any = await axios.get(
           'http://localhost:8080/api/interview-experiences'
@@ -55,18 +21,45 @@ const InterviewExperiencesComponent = () => {
         dispatch({ type: ACTIONS.ERROR, error: error.message || error });
       }
     };
-    getExperiences();
+    getInterviewExperiences();
   }, []);
+
+  const postInterviewExperienceSubmitHandler = ( data: any) => {
+    const postInterviewExperience = async () => {
+
+      try {
+        let response: any = await axios.post('http://localhost:8080/api/interview-experiences', data);
+
+        dispatch({ type: ACTIONS.ADD_INTERVIEW_EXPERIENCE, data: response.data });
+      } catch (error) {
+        dispatch({ type: ACTIONS.ERROR, error: error.message || error });
+      }
+  }
+    postInterviewExperience()
+  }
+
+  const deleteInterviewExperience = async (id: string) => {
+
+    try {
+      let response: any = await axios.delete(`http://localhost:8080/api/interview-experiences/${id}`)
+      dispatch({ type: ACTIONS.DELETE_INTERVIEW_EXPERIENCE, data: response.data });
+
+    } catch (error) {
+      dispatch({ type: ACTIONS.ERROR, error: error.message || error });
+    }
+  }
+
   return (
     <div data-testid='interviewExperiencesComponent'>
       <h1>Interview Experiences Component</h1>
+      <InterviewExperienceForm handleSubmit={postInterviewExperienceSubmitHandler} /> 
       {loading ? (
         <p>loading...</p>
       ) : error ? (
         <p>{error}</p>
       ) : (
         <ul>
-          {experienceDetails.map((experience: any) => {
+          {interviewExperienceDetails.map((experience: any) => {
             let {
               id,
               position,
@@ -82,7 +75,7 @@ const InterviewExperiencesComponent = () => {
 
             return (
               <li key={id}>
-                <h1>Position: {position}</h1>
+                <h1>Position: {position} <span><button onClick={()=>deleteInterviewExperience(id)}>x</button></span></h1>
                 <h2>Company: {company}</h2>
                 <h3>Offer: {offer.toString()}</h3>
                 <h4>Rounds: {rounds}</h4>
