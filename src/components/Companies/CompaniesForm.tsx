@@ -1,17 +1,34 @@
-import { useState, useEffect } from "react"
+import { useState} from "react"
 
-const CompaniesForm = () => {
+type CompaniesFormProps = {
+  handleSubmit: Function
+}
+
+const CompaniesForm = ({handleSubmit}: CompaniesFormProps ) => {
   const [name, setName] = useState("")
   const [location, setLocation] = useState("")
   const [description, setDescription] = useState("")
   const [size, setSize] = useState("");
   const [industry, setIndustry] = useState("");
 
+  const submitForm = (event: any) => {
+    event.preventDefault()
+
+    handleSubmit(
+      {
+      name,
+      location,
+      industry,
+      description,
+      size,
+      
+    })
+  }
 
   return (
     <div data-testid='companiesForm'>
       <h1>Companies Form</h1>
-      <form>
+      <form onSubmit={(e:any) => submitForm(e)}>
         <label>
           Company Name:
           <input onChange={(e : any) => setName(e.target.value)} type="text" value={name}/>

@@ -1,47 +1,12 @@
 import { useReducer, useEffect } from 'react';
 import axios from 'axios';
-
-const ACTIONS = {
-  GET_JOBS: 'GET_JOBS',
-  SUCCESS: 'success',
-  ERROR: 'error'
-}
-
-const jobsDetailsReducer = (state: any, action: any) => {
-  switch (action.type) {
-    case ACTIONS.GET_JOBS: {
-      return {
-        ...state,
-        loading: true,
-      }
-    }
-    case ACTIONS.SUCCESS: {
-      return {
-        ...state,
-        loading: false,
-        jobsDetails: action.data,
-      }
-    }
-    case ACTIONS.ERROR: {
-      return {
-        ...state,
-        loading: false,
-        error: action.error,
-      }
-    }
-  }
-};
-
-const initialState = {
-  jobsDetails: [],
-  loading: false,
-  error: null,
-}
+import JobsForm from './JobsForm';
+import { jobDetailsReducer, ACTIONS, initialState } from './JobsReducer';
 
 
 const JobsComponent = () => {
-  const [state, dispatch] = useReducer(jobsDetailsReducer, initialState);
-  const { jobsDetails, loading, error } = state;
+  const [state, dispatch] = useReducer(jobDetailsReducer, initialState);
+  const { jobDetails, loading, error } = state;
   useEffect(() => {
     dispatch({ type: ACTIONS.GET_JOBS });
     const getJobs = async () => {
@@ -56,18 +21,45 @@ const JobsComponent = () => {
     }
     getJobs();
   }, [])
+
+  const postJobSubmitHandler = ( data: any) => {
+    const postJob = async () => {
+
+      try {
+        let response: any = await axios.post('http://localhost:8080/api/jobs', data);
+
+        dispatch({ type: ACTIONS.ADD_JOB, data: response.data });
+      } catch (error) {
+        dispatch({ type: ACTIONS.ERROR, error: error.message || error });
+      }
+  }
+    postJob()
+  }
+
+  const deleteJob = async (id: string) => {
+
+    try {
+      let response: any = await axios.delete(`http://localhost:8080/api/jobs/${id}`)
+      dispatch({ type: ACTIONS.DELETE_JOB, data: response.data });
+
+    } catch (error) {
+      dispatch({ type: ACTIONS.ERROR, error: error.message || error });
+    }
+  }
+
   return (
     <div data-testid='jobsComponent'>
       <h1>Jobs Component</h1>
+      <JobsForm handleSubmit={postJobSubmitHandler}/>
       {loading ? (
         <p>loading...</p>
       ) : error ? (
           <p>{error}</p>
         ) : (
             <ul>
-              {jobsDetails.map((job: any) => (
+              {jobDetails.map((job: any) => (
                 <li key={job.id}>
-                  <h1>{job.position}</h1>
+                  <h1>{job.position} <span><button onClick={()=>deleteJob(job.id)}>x</button></span></h1>
                 </li>
               ))}
             </ul>

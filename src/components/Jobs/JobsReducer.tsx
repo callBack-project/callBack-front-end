@@ -1,30 +1,30 @@
 export const ACTIONS = {
-  GET_COMPANIES: 'GET_COMPANIES',
-  ADD_COMPANY: "ADD_COMPANY",
-  DELETE_COMPANY: 'DELETE_COMPANY',
+  GET_JOBS: 'GET_JOBS',
+  ADD_JOB: "ADD_JOB",
+  DELETE_JOB: 'DELETE_JOB',
   SUCCESS: 'success',
   ERROR: 'error',
-};
+}
 
-export const companyDetailsReducer = (state: any, action: any) => {
+export const jobDetailsReducer = (state: any, action: any) => {
   switch (action.type) {
-    case ACTIONS.GET_COMPANIES: {
+    case ACTIONS.GET_JOBS: {
       return {
         ...state,
         loading: true,
-      };
+      }
     }
-    case ACTIONS.ADD_COMPANY: {
+    case ACTIONS.ADD_JOB: {
       return {
         ...state,
-        companyDetails: [...state.companyDetails, action.data],
+        jobDetails: [...state.jobDetails, action.data],
         loading: false,
       }
     }
-    case ACTIONS.DELETE_COMPANY: {
+    case ACTIONS.DELETE_JOB: {
       return {
         ...state,
-        companyDetails: state.companyDetails.filter((item: any) => item.id !== action.data.id),
+        jobDetails: state.jobDetails.filter((item: any) => item.id !== action.data.id),
         loading: false,
       }
     }
@@ -32,15 +32,15 @@ export const companyDetailsReducer = (state: any, action: any) => {
       return {
         ...state,
         loading: false,
-        companyDetails: action.data,
-      };
+        jobDetails: action.data,
+      }
     }
     case ACTIONS.ERROR: {
       return {
         ...state,
         loading: false,
         error: action.error,
-      };
+      }
     }
     default:
       return state
@@ -48,7 +48,7 @@ export const companyDetailsReducer = (state: any, action: any) => {
 };
 
 export const initialState = {
-  companyDetails: [],
+  jobDetails: [],
   loading: false,
   error: null,
-};
+}

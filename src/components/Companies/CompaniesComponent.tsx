@@ -1,11 +1,11 @@
 import { useReducer, useEffect } from 'react';
 import axios from 'axios';
-import { companiesDetailsReducer, ACTIONS, initialState } from './CompaniesReducer';
+import { companyDetailsReducer, ACTIONS, initialState } from './CompaniesReducer';
 import CompaniesForm from './CompaniesForm'
 
 const CompaniesComponent = () => {
-  const [state, dispatch] = useReducer(companiesDetailsReducer, initialState);
-  const { companiesDetails, loading, error } = state;
+  const [state, dispatch] = useReducer(companyDetailsReducer, initialState);
+  const { companyDetails, loading, error } = state;
   useEffect(() => {
     dispatch({ type: ACTIONS.GET_COMPANIES });
     const getCompanies = async () => {
@@ -22,19 +22,45 @@ const CompaniesComponent = () => {
     };
     getCompanies();
   }, []);
+  
+  const postCompanySubmitHandler = ( data: any) => {
+    const postCompany = async () => {
+
+      try {
+        let response: any = await axios.post('http://localhost:8080/api/companies', data);
+
+        dispatch({ type: ACTIONS.ADD_COMPANY, data: response.data });
+      } catch (error) {
+        dispatch({ type: ACTIONS.ERROR, error: error.message || error });
+      }
+  }
+    postCompany()
+  }
+
+  const deleteCompany = async (id: string) => {
+
+    try {
+      let response: any = await axios.delete(`http://localhost:8080/api/companies/${id}`)
+      dispatch({ type: ACTIONS.DELETE_COMPANY, data: response.data });
+
+    } catch (error) {
+      dispatch({ type: ACTIONS.ERROR, error: error.message || error });
+    }
+  }
+
   return (
     <div data-testid='companiesComponent'>
       <h1>Companies Component</h1>
-      <CompaniesForm/>
+      <CompaniesForm handleSubmit={postCompanySubmitHandler}/>
       {loading ? (
         <p>loading...</p>
       ) : error ? (
         <p>{error}</p>
       ) : (
         <ul>
-          {companiesDetails.map((company: any) => (
+          {companyDetails.map((company: any) => (
             <li key={company.id}>
-              <h1>{company.name}</h1>
+              <h1>{company.name} <span><button onClick={()=>deleteCompany(company.id)}>x</button></span></h1>
             </li>
           ))}
         </ul>
