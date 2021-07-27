@@ -8,6 +8,7 @@ const UsersForm = ( {handleSubmit}: UsersFormProps ) => {
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
   const [userName, setUsername] = useState("");
+  const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [company, setCompany] = useState("");
   const [bio, setBio] = useState("");
@@ -24,6 +25,7 @@ const UsersForm = ( {handleSubmit}: UsersFormProps ) => {
         firstName,
         lastName,
         userName,
+        email,
         password,
         company,
         bio,
@@ -47,6 +49,10 @@ const UsersForm = ( {handleSubmit}: UsersFormProps ) => {
         <label>
           Username:
           <input onChange={(e: any) => setUsername(e.target.value)} type="text" value={userName}/>
+        </label>
+        <label>
+          Email:
+          <input onChange={(e: any) => setEmail(e.target.value)} type="text" value={email}/>
         </label>
         <label>
           Password:
