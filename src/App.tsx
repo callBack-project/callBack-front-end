@@ -4,6 +4,8 @@ import Companies from './Pages/Companies';
 import InterviewExperiences from './Pages/InterviewExperiences';
 import Events from './Pages/Events';
 import Users from './Pages/Users'
+import Login from './Pages/Login'
+import SignUp from './Pages/SignUp'
 
 import './App.css';
 
@@ -21,6 +23,9 @@ function App() {
             path="/interview-experiences"
             component={InterviewExperiences}
           />
+          <Route exact path="/login" component={Login} />
+          <Route exact path="/sign-up" component={SignUp}/>
+          
         </Switch>
       </div>
     </Router>
