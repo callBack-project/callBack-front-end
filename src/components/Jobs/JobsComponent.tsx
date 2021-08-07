@@ -2,8 +2,6 @@ import { useReducer, useEffect } from 'react';
 import axios from 'axios';
 import JobsForm from './JobsForm';
 import { jobDetailsReducer, ACTIONS, initialState } from './JobsReducer';
-import FooterComponent from '../Footer/FooterComponent';
-
 
 const JobsComponent = () => {
   const [state, dispatch] = useReducer(jobDetailsReducer, initialState);
@@ -49,7 +47,7 @@ const JobsComponent = () => {
   }
 
   return (
-    <div className='content' data-testid='jobsComponent'>
+    <div data-testid='jobsComponent'>
       <h1>Jobs Component</h1>
       <JobsForm handleSubmit={postJobSubmitHandler}/>
       {loading ? (
@@ -65,7 +63,6 @@ const JobsComponent = () => {
               ))}
             </ul>
       )}
-      <FooterComponent/>
     </div>
   )
 }

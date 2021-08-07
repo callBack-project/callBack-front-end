@@ -6,13 +6,14 @@ import Events from './Pages/Events';
 import Users from './Pages/Users'
 import Login from './Pages/Login'
 import SignUp from './Pages/SignUp'
+import FooterComponent from './components/Footer/FooterComponent';
 
 import './App.css';
 
 function App() {
   return (
     <Router>
-      <div>
+      <div className='content'>
         <Switch>
           <Route exact path="/users" component={Users} />
           <Route exact path="/events" component={Events} />
@@ -25,8 +26,9 @@ function App() {
           />
           <Route exact path="/login" component={Login} />
           <Route exact path="/sign-up" component={SignUp}/>
-          
+
         </Switch>
+        <FooterComponent/>
       </div>
     </Router>
   );
