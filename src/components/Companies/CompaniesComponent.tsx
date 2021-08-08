@@ -1,4 +1,4 @@
-import { useReducer, useEffect } from 'react';
+import { useReducer, useEffect, useState } from 'react';
 import axios from 'axios';
 import { companyDetailsReducer, ACTIONS, initialState } from './CompaniesReducer';
 import CompaniesForm from './CompaniesForm'
@@ -6,6 +6,9 @@ import CompaniesForm from './CompaniesForm'
 const CompaniesComponent = () => {
   const [state, dispatch] = useReducer(companyDetailsReducer, initialState);
   const { companyDetails, loading, error } = state;
+  const [searchTerm, setSearchTerm] = useState('');
+
+
   useEffect(() => {
     dispatch({ type: ACTIONS.GET_COMPANIES });
     const getCompanies = async () => {
@@ -48,6 +51,15 @@ const CompaniesComponent = () => {
     }
   }
 
+  const handleSearch = (event: any) => {
+    setSearchTerm(event.target.value)
+  }
+
+  const searchCompany = companyDetails.filter((company: any) => {
+    return company.name.toLowerCase().includes(searchTerm.toLowerCase());
+  })
+
+
   return (
     <div data-testid='companiesComponent'>
       <h1>Companies Component</h1>
@@ -56,11 +68,14 @@ const CompaniesComponent = () => {
         <p>loading...</p>
       ) : error ? (
         <p>{error}</p>
-      ) : (
+        ) : (
+            
         <ul>
-          {companyDetails.map((company: any) => (
+          <input id='search' type='text' value={searchTerm} placeholder='Search' onChange={handleSearch}/>
+          {searchCompany.map((company: any) => (
             <li key={company.id}>
-              <h1>{company.name} <span><button onClick={()=>deleteCompany(company.id)}>x</button></span></h1>
+              <h1>{company.name} <span><button onClick={() => deleteCompany(company.id)}>x</button></span></h1>
+              <p>{company.description}</p>
             </li>
           ))}
         </ul>
