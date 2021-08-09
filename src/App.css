@@ -36,3 +36,18 @@
     transform: rotate(360deg);
   }
 }
+
+.content {
+  display: grid;
+  height: 100vh;
+}
+
+/* Footer Stylings */
+
+.footer {
+  background-color: #03033A;
+  align-self: end;
+  text-align: center;
+  color: white;
+  border-top: solid #F7DF1E;
+}

@@ -3,7 +3,6 @@ import axios from 'axios';
 import JobsForm from './JobsForm';
 import { jobDetailsReducer, ACTIONS, initialState } from './JobsReducer';
 
-
 const JobsComponent = () => {
   const [state, dispatch] = useReducer(jobDetailsReducer, initialState);
   const { jobDetails, loading, error } = state;
