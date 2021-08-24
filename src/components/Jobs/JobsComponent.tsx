@@ -54,7 +54,6 @@ const JobsComponent = () => {
   }
 
   const searchJobs = jobDetails.filter((user: any) => {
-    // return user.firstName.toLowerCase().includes(searchTerm.toLowerCase()) || user.lastName.toLowerCase().includes(searchTerm.toLowerCase());
     return Object.keys(user).some(key =>
       String(user[key]).toLowerCase().includes(searchTerm.toLowerCase())
     );

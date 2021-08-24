@@ -1,4 +1,4 @@
-import { useReducer, useEffect } from 'react';
+import { useReducer, useEffect, useState } from 'react';
 import axios from 'axios';
 import InterviewExperienceForm from './InterviewExperiencesForm';
 import { interviewExperienceDetailsReducer, ACTIONS, initialState } from './InterviewExperiencesReducer';
@@ -6,7 +6,9 @@ import { interviewExperienceDetailsReducer, ACTIONS, initialState } from './Inte
 
 const InterviewExperiencesComponent = () => {
   const [state, dispatch] = useReducer(interviewExperienceDetailsReducer, initialState);
+  const [searchTerm, setSearchTerm] = useState('');
   const { interviewExperienceDetails, loading, error } = state;
+  
   useEffect(() => {
     dispatch({ type: ACTIONS.GET_INTERVIEW_EXPERIENCES });
     const getInterviewExperiences = async () => {
@@ -48,10 +50,19 @@ const InterviewExperiencesComponent = () => {
       dispatch({ type: ACTIONS.ERROR, error: error.message || error });
     }
   }
+  const handleSearch = (event: any) => {
+    setSearchTerm(event.target.value)
+  }
 
+  const searchInterviewExperiences = interviewExperienceDetails.filter((interviewExperience: any) => {
+    return Object.keys(interviewExperience).some(key =>
+      String(interviewExperience[key]).toLowerCase().includes(searchTerm.toLowerCase())
+    );
+  })
   return (
     <div data-testid='interviewExperiencesComponent'>
       <h1>Interview Experiences Component</h1>
+      <input id='search' type='text' value={searchTerm} placeholder='Search' onChange={handleSearch}/>
       <InterviewExperienceForm handleSubmit={postInterviewExperienceSubmitHandler} /> 
       {loading ? (
         <p>loading...</p>
@@ -59,7 +70,7 @@ const InterviewExperiencesComponent = () => {
         <p>{error}</p>
       ) : (
         <ul>
-          {interviewExperienceDetails.map((experience: any) => {
+          {searchInterviewExperiences.map((experience: any) => {
             let {
               id,
               position,
