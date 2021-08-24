@@ -63,7 +63,9 @@ const CompaniesComponent = () => {
   return (
     <div data-testid='companiesComponent'>
       <h1>Companies Component</h1>
-      <CompaniesForm handleSubmit={postCompanySubmitHandler}/>
+      <CompaniesForm handleSubmit={postCompanySubmitHandler} />
+      <input id='search' type='text' value={searchTerm} placeholder='Search' onChange={handleSearch}/>
+      
       {loading ? (
         <p>loading...</p>
       ) : error ? (
@@ -71,7 +73,6 @@ const CompaniesComponent = () => {
         ) : (
             
         <ul>
-          <input id='search' type='text' value={searchTerm} placeholder='Search' onChange={handleSearch}/>
           {searchCompany.map((company: any) => (
             <li key={company.id}>
               <h1>{company.name} <span><button onClick={() => deleteCompany(company.id)}>x</button></span></h1>
