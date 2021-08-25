@@ -1,11 +1,13 @@
-import { useReducer, useEffect } from 'react';
+import { useReducer, useEffect, useState } from 'react';
 import axios from 'axios';
 import JobsForm from './JobsForm';
 import { jobDetailsReducer, ACTIONS, initialState } from './JobsReducer';
 
 const JobsComponent = () => {
   const [state, dispatch] = useReducer(jobDetailsReducer, initialState);
+  const [searchTerm, setSearchTerm] = useState('');
   const { jobDetails, loading, error } = state;
+
   useEffect(() => {
     dispatch({ type: ACTIONS.GET_JOBS });
     const getJobs = async () => {
@@ -46,17 +48,31 @@ const JobsComponent = () => {
     }
   }
 
+  const handleSearch = (event: any) => {
+    setSearchTerm(event.target.value)
+  }
+
+  const searchJobs = jobDetails.filter((user: any) => {
+    return Object.keys(user).some(key =>
+      String(user[key]).toLowerCase().includes(searchTerm.toLowerCase())
+    );
+  })
+  
+
+
   return (
     <div data-testid='jobsComponent'>
       <h1>Jobs Component</h1>
-      <JobsForm handleSubmit={postJobSubmitHandler}/>
+      <JobsForm handleSubmit={postJobSubmitHandler} />
+      <input id='search' type='text' value={searchTerm} placeholder='Search' onChange={handleSearch}/>
+      
       {loading ? (
         <p>loading...</p>
       ) : error ? (
           <p>{error}</p>
         ) : (
             <ul>
-              {jobDetails.map((job: any) => (
+              {searchJobs.map((job: any) => (
                 <li key={job.id}>
                   <h1>{job.position} <span><button onClick={()=>deleteJob(job.id)}>x</button></span></h1>
                 </li>

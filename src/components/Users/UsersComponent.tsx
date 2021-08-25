@@ -1,4 +1,4 @@
-import { useReducer, useEffect } from 'react'
+import { useReducer, useEffect, useState } from 'react'
 import axios from 'axios';
 import UsersForm from './UsersForm';
 import { userDetailsReducer, ACTIONS, initialState } from './UsersReducer';
@@ -6,7 +6,9 @@ import { userDetailsReducer, ACTIONS, initialState } from './UsersReducer';
 
 const UsersComponent = () => {
   const [state, dispatch] = useReducer(userDetailsReducer, initialState);
+  const [searchTerm, setSearchTerm] = useState('');
   const { userDetails, loading, error } = state;
+
   useEffect(() => {
     dispatch({ type: ACTIONS.GET_USERS });
     const getUsers = async () => {
@@ -47,6 +49,14 @@ const UsersComponent = () => {
     }
   }
 
+  const handleSearch = (event: any) => {
+    setSearchTerm(event.target.value)
+  }
+
+  const searchUser = userDetails.filter((user: any) => {
+    return user.firstName.toLowerCase().includes(searchTerm.toLowerCase()) || user.lastName.toLowerCase().includes(searchTerm.toLowerCase());
+  })
+
 
   return (
     <div data-testid='usersComponent'>
@@ -58,9 +68,11 @@ const UsersComponent = () => {
           <p>{error}</p>
         ) : (
             <ul>
-              {userDetails.map((user: any) => (
+              <input id='search' type='text' value={searchTerm} placeholder='Search' onChange={handleSearch}/>
+              {searchUser.map((user: any) => (
                 <li key={user.id}>
                   <h1>{user.firstName} <span><button onClick={()=>deleteUser(user.id)}>x</button></span></h1>
+                  <h1>{user.lastName}</h1>
                 </li>
               ))}
             </ul>
