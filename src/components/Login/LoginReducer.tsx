@@ -1,12 +1,12 @@
 export const ACTIONS = {
-  GET_USER: 'GET_USER',
+  LOGIN_USER: 'LOGIN_USER',
   SUCCESS: 'success',
   ERROR: 'error'
 }
 
-export const jobDetailsReducer = (state: any, action: any) => {
+export const loginReducer = (state: any, action: any) => {
   switch (action.type) {
-    case ACTIONS.GET_USER: {
+    case ACTIONS.LOGIN_USER: {
       return {
         ...state,
         loading: true,
