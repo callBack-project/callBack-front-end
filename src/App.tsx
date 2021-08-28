@@ -6,6 +6,7 @@ import Events from './Pages/Events';
 import Users from './Pages/Users'
 import Login from './Pages/Login'
 import SignUp from './Pages/SignUp'
+import UserPage from './Pages/User-Page'
 import FooterComponent from './components/Footer/FooterComponent';
 
 import './App.css';
@@ -24,8 +25,9 @@ function App() {
             path="/interview-experiences"
             component={InterviewExperiences}
           />
-          <Route exact path="/login" component={Login} />
           <Route exact path="/sign-up" component={SignUp}/>
+          <Route exact path='/home' component={UserPage} />
+          <Route component={Login} />
 
         </Switch>
         <FooterComponent/>
