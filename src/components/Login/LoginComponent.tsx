@@ -1,12 +1,15 @@
 import { Link, useHistory } from "react-router-dom";
-import { useState, useReducer } from "react"
-import { loginReducer, ACTIONS, initialState } from './LoginReducer';
+import { useState, useContext } from "react"
+// import { loginReducer, ACTIONS, initialState } from './LoginReducer';
+import { ACTIONS } from './LoginReducer';
+import { AppContext } from '../Context/context';
 import axios from 'axios'
 
 
 const LoginComponent = () => {
-  const [state, dispatch] = useReducer(loginReducer, initialState);
+  //const [state, dispatch] = useReducer(loginReducer, initialState);
   //const { companyDetails, loading, error } = state;
+  const { state, dispatch } = useContext(AppContext)
   const [email, setEmail] = useState("")
   const [password, setPassword] = useState("")
   const history = useHistory()
@@ -17,7 +20,7 @@ const LoginComponent = () => {
     dispatch({ type: ACTIONS.LOGIN_USER })
     try {
       const response = await axios.put('http://localhost:8080/api/auth/login', formData);
-      //console.log('resp-->', response)
+      console.log('resp-->', response, 'old state ->', state)
       dispatch({ type: ACTIONS.SUCCESS, data: response.data });
       console.log('login comp state ->', state)
       history.push('/home')
