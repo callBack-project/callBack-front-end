@@ -1,14 +1,16 @@
 import { Link, useHistory } from "react-router-dom";
-import { useState, useContext } from "react"
+import { useState, useContext, useEffect } from "react"
 // import { loginReducer, ACTIONS, initialState } from './LoginReducer';
 import { ACTIONS } from './LoginReducer';
 import { AppContext } from '../Context/context';
 import axios from 'axios'
 
+const instance = axios.create({
+  withCredentials: true
+})
+
 
 const LoginComponent = () => {
-  //const [state, dispatch] = useReducer(loginReducer, initialState);
-  //const { companyDetails, loading, error } = state;
   const { state, dispatch } = useContext(AppContext)
   const [email, setEmail] = useState("")
   const [password, setPassword] = useState("")
@@ -19,15 +21,28 @@ const LoginComponent = () => {
   
     dispatch({ type: ACTIONS.LOGIN_USER })
     try {
-      const response = await axios.put('http://localhost:8080/api/auth/login', formData);
-      console.log('resp-->', response, 'old state ->', state)
+      const response = await instance.put('http://localhost:8080/api/auth/login', formData);
       dispatch({ type: ACTIONS.SUCCESS, data: response.data });
-      console.log('login comp state ->', state)
       history.push('/home')
     } catch (error) {
       dispatch({ type: ACTIONS.ERROR, error: error.message || error });
     }
   }
+
+  useEffect(() => {
+    const getMe = async () => {
+      dispatch({ type: ACTIONS.LOGIN_USER })
+      try {
+        const response: any = await instance.get('http://localhost:8080/api/auth/me');
+        dispatch({ type: ACTIONS.SUCCESS, data: response.data });
+        history.push('/home')
+        return
+      } catch (error) {
+        dispatch({ type: ACTIONS.ERROR, error: error.message || error })
+      }
+    }
+      getMe()
+  }, [])
 
 
   return (
