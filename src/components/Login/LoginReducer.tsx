@@ -17,6 +17,7 @@ export const loginReducer = (state: any, action: any) => {
         ...state,
         loading: false,
         user: action.data,
+        error: null
       }
     }
     case ACTIONS.ERROR: {
