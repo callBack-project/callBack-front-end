@@ -2,12 +2,13 @@ import { useReducer, useEffect, useState } from 'react';
 import axios from 'axios';
 import InterviewExperienceForm from './InterviewExperiencesForm';
 import { interviewExperienceDetailsReducer, ACTIONS, initialState } from './InterviewExperiencesReducer';
-
+import InterviewRepliesComponent from '../InterviewReplies/InterviewRepliesComponent'
 
 const InterviewExperiencesComponent = () => {
   const [state, dispatch] = useReducer(interviewExperienceDetailsReducer, initialState);
   const [searchTerm, setSearchTerm] = useState('');
   const { interviewExperienceDetails, loading, error } = state;
+  const [viewComments, setViewComments] = useState(false)
   
   useEffect(() => {
     dispatch({ type: ACTIONS.GET_INTERVIEW_EXPERIENCES });
@@ -59,6 +60,10 @@ const InterviewExperiencesComponent = () => {
       String(interviewExperience[key]).toLowerCase().includes(searchTerm.toLowerCase())
     );
   })
+
+  const viewCommentsHandleClick = () => {
+    setViewComments(true)
+  } 
   return (
     <div data-testid='interviewExperiencesComponent'>
       <h1>Interview Experiences Component</h1>
@@ -96,6 +101,8 @@ const InterviewExperiencesComponent = () => {
                 </p>
                 <p>Likes:{likes}</p>
                 <br />
+                <p className='view-comments' onClick={() => viewCommentsHandleClick}>View Comments</p>
+               {viewComments ? <InterviewRepliesComponent/> : null} 
               </li>
             );
           })}
