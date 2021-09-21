@@ -2,13 +2,13 @@ import { useReducer, useEffect, useState } from 'react';
 import axios from 'axios';
 import InterviewExperienceForm from './InterviewExperiencesForm';
 import { interviewExperienceDetailsReducer, ACTIONS, initialState } from './InterviewExperiencesReducer';
-import InterviewRepliesComponent from '../InterviewReplies/InterviewRepliesComponent'
 
 const InterviewExperiencesComponent = () => {
   const [state, dispatch] = useReducer(interviewExperienceDetailsReducer, initialState);
   const [searchTerm, setSearchTerm] = useState('');
-  const { interviewExperienceDetails, loading, error } = state;
+  const { interviewExperienceDetails, interviewRepliesDetails, loading, error } = state;
   const [viewComments, setViewComments] = useState(false)
+  const [interviewReplies, setInterviewReplies] = useState([])
   
   useEffect(() => {
     dispatch({ type: ACTIONS.GET_INTERVIEW_EXPERIENCES });
@@ -17,7 +17,7 @@ const InterviewExperiencesComponent = () => {
         let response: any = await axios.get(
           'http://localhost:8080/api/interview-experiences'
         );
-        console.log(response.data);
+        // console.log(response.data);
         dispatch({ type: ACTIONS.SUCCESS, data: response.data });
         return;
       } catch (error) {
@@ -27,12 +27,26 @@ const InterviewExperiencesComponent = () => {
     getInterviewExperiences();
   }, []);
 
+  const getAllInterviewRepliesHandleClick = (id: any) => {
+    const viewRepliesHandleClick = async () => {
+      console.log(id)
+      setViewComments(true)
+      try {
+        let response: any = await axios.get(`http://localhost:8080/api/interview-experiences/replies/${id}`)
+        dispatch({ type: ACTIONS.GET_INTERVIEW_REPLIES_BY_INT_ID, data: response.data })
+        return;
+      } catch (error) {
+        dispatch({ type: ACTIONS.ERROR, error: error.message || error });
+      }
+    }
+    viewRepliesHandleClick();
+  }
+  
+
   const postInterviewExperienceSubmitHandler = ( data: any) => {
     const postInterviewExperience = async () => {
-
       try {
         let response: any = await axios.post('http://localhost:8080/api/interview-experiences', data);
-
         dispatch({ type: ACTIONS.ADD_INTERVIEW_EXPERIENCE, data: response.data });
       } catch (error) {
         dispatch({ type: ACTIONS.ERROR, error: error.message || error });
@@ -42,15 +56,16 @@ const InterviewExperiencesComponent = () => {
   }
 
   const deleteInterviewExperience = async (id: string) => {
-
     try {
       let response: any = await axios.delete(`http://localhost:8080/api/interview-experiences/${id}`)
       dispatch({ type: ACTIONS.DELETE_INTERVIEW_EXPERIENCE, data: response.data });
-
     } catch (error) {
       dispatch({ type: ACTIONS.ERROR, error: error.message || error });
     }
   }
+
+  
+
   const handleSearch = (event: any) => {
     setSearchTerm(event.target.value)
   }
@@ -61,9 +76,7 @@ const InterviewExperiencesComponent = () => {
     );
   })
 
-  const viewCommentsHandleClick = () => {
-    setViewComments(true)
-  } 
+ 
   return (
     <div data-testid='interviewExperiencesComponent'>
       <h1>Interview Experiences Component</h1>
@@ -101,11 +114,12 @@ const InterviewExperiencesComponent = () => {
                 </p>
                 <p>Likes:{likes}</p>
                 <br />
-                <p className='view-comments' onClick={() => viewCommentsHandleClick}>View Comments</p>
-               {viewComments ? <InterviewRepliesComponent/> : null} 
+                <p className='view-comments' onClick={() => getAllInterviewRepliesHandleClick(id)}>View Comments</p>
+                {viewComments && interviewRepliesDetails.length ? interviewRepliesDetails.map((reply:any) => { <p>{reply.reply}</p> }) : null}
+              
               </li>
             );
-          })}
+          })}  
         </ul>
       )}
     </div>

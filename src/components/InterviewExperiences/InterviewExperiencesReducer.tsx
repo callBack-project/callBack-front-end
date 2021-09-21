@@ -1,9 +1,10 @@
 export const ACTIONS = {
-    GET_INTERVIEW_EXPERIENCES: 'GET_INTERVIEW_EXPERIENCES',
-    ADD_INTERVIEW_EXPERIENCE: "ADD_INTERVIEW_EXPERIENCE",
-    DELETE_INTERVIEW_EXPERIENCE: 'DELETE_INTERVIEW_EXPERIENCE',
-    SUCCESS: 'success',
-    ERROR: 'error',
+  GET_INTERVIEW_EXPERIENCES: 'GET_INTERVIEW_EXPERIENCES',
+  GET_INTERVIEW_REPLIES_BY_INT_ID: 'GET_INTERVIEW_REPLIES_BY_INT_ID',
+  ADD_INTERVIEW_EXPERIENCE: "ADD_INTERVIEW_EXPERIENCE",
+  DELETE_INTERVIEW_EXPERIENCE: 'DELETE_INTERVIEW_EXPERIENCE',
+  SUCCESS: 'success',
+  ERROR: 'error',
   }
   
   export const interviewExperienceDetailsReducer = (state: any, action: any) => {
@@ -11,6 +12,13 @@ export const ACTIONS = {
       case ACTIONS.GET_INTERVIEW_EXPERIENCES: {
         return {
           ...state,
+          loading: true,
+        }
+      }
+      case ACTIONS.GET_INTERVIEW_REPLIES_BY_INT_ID: {
+        return {
+          ...state,
+          interviewRepliesDetails: action.data,
           loading: true,
         }
       }
@@ -49,6 +57,7 @@ export const ACTIONS = {
   
   export const initialState = {
     interviewExperienceDetails: [],
+    interviewRepliesDetails: [],
     loading: false,
     error: null,
   }
