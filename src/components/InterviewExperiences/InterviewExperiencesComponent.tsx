@@ -6,9 +6,12 @@ import { interviewExperienceDetailsReducer, ACTIONS, initialState } from './Inte
 const InterviewExperiencesComponent = () => {
   const [state, dispatch] = useReducer(interviewExperienceDetailsReducer, initialState);
   const [searchTerm, setSearchTerm] = useState('');
+  const [interviewExperiences, setInterviewExperiences] = useState([])
   const { interviewExperienceDetails, interviewRepliesDetails, loading, error } = state;
   const [viewComments, setViewComments] = useState(false)
+  const [selectedInterviewReplies, setSelectedInterviewReplies] = useState({ replyId: '' })
   const [interviewReplies, setInterviewReplies] = useState([])
+  console.log(interviewReplies, 'interview replies')
   
   useEffect(() => {
     dispatch({ type: ACTIONS.GET_INTERVIEW_EXPERIENCES });
@@ -17,32 +20,87 @@ const InterviewExperiencesComponent = () => {
         let response: any = await axios.get(
           'http://localhost:8080/api/interview-experiences'
         );
-        // console.log(response.data);
+
         dispatch({ type: ACTIONS.SUCCESS, data: response.data });
-        return;
+        setInterviewExperiences(response.data)
+
+        // return;
       } catch (error) {
         dispatch({ type: ACTIONS.ERROR, error: error.message || error });
       }
     };
     getInterviewExperiences();
-  }, []);
+  }, [interviewReplies]);
 
-  const getAllInterviewRepliesHandleClick = (id: any) => {
-    const viewRepliesHandleClick = async () => {
-      console.log(id)
-      setViewComments(true)
-      try {
-        let response: any = await axios.get(`http://localhost:8080/api/interview-experiences/replies/${id}`)
-        dispatch({ type: ACTIONS.GET_INTERVIEW_REPLIES_BY_INT_ID, data: response.data })
-        return;
-      } catch (error) {
-        dispatch({ type: ACTIONS.ERROR, error: error.message || error });
-      }
-    }
-    viewRepliesHandleClick();
-  }
   
+  // const getAllInterviewRepliesHandleClick = (id: any) => {
+  //   const viewRepliesHandleClick = async () => {
+  //     console.log(id)
+  //     setViewComments(true)
+  //     try {
+  //       let response: any = await axios.get(`http://localhost:8080/api/interview-experiences/replies/${id}`)
+  //       dispatch({ type: ACTIONS.GET_INTERVIEW_REPLIES_BY_INT_ID, data: response.data })
+  //       return;
+  //     } catch (error) {
+  //       dispatch({ type: ACTIONS.ERROR, error: error.message || error });
+  //     }
+  //   }
+  //   viewRepliesHandleClick();
+  // }
 
+useEffect(() => {
+  const getInterviewReplies = async () => {
+    setViewComments(true)
+    try {
+      let response: any = await axios.get(`http://localhost:8080/api/interview-experiences/replies/${selectedInterviewReplies.replyId}`)
+      // console.log(response.data)
+      dispatch({ type: ACTIONS.GET_INTERVIEW_REPLIES_BY_INT_ID, data: response.data });
+      setInterviewReplies(response.data);
+      return;
+    } catch (error) {
+      dispatch({ type: ACTIONS.ERROR, error: error.message || error });
+    }
+  }
+  if (selectedInterviewReplies.replyId !== '') {
+    getInterviewReplies();
+  }
+}, [selectedInterviewReplies]) 
+  
+  // useEffect(() => {
+  //   const getAllInterviewRepliesHandleClick = async () => {
+  //     const {data: scheduledSearches}  = await apiClientWithAuth.get(
+  //       apiEndpoints.scheduledSearches,
+  //       {
+  //         params: {
+  //           search: selectedSearch.id
+  //         }
+  //       }
+  //     );
+  //     setScheduledSearches(scheduledSearches)
+  //   };
+  //   if (selectedSearch.id !== '') {
+  //     getScheduledSearches();
+  //   }
+  // }, [selectedSearch]);
+
+  // useEffect(() => {
+  //   const getScheduledSearches = async () => {
+  //     const {data: scheduledSearches}  = await apiClientWithAuth.get(
+  //       apiEndpoints.scheduledSearches,
+  //       {
+  //         params: {
+  //           search: selectedSearch.id
+  //         }
+  //       }
+  //     );
+  //     setScheduledSearches(scheduledSearches)
+  //   };
+  //   if (selectedSearch.id !== '') {
+  //     getScheduledSearches();
+  //   }
+  // }, [selectedSearch]);
+
+ 
   const postInterviewExperienceSubmitHandler = ( data: any) => {
     const postInterviewExperience = async () => {
       try {
@@ -70,7 +128,7 @@ const InterviewExperiencesComponent = () => {
     setSearchTerm(event.target.value)
   }
 
-  const searchInterviewExperiences = interviewExperienceDetails.filter((interviewExperience: any) => {
+  const searchInterviewExperiences = interviewExperiences.filter((interviewExperience: any) => {
     return Object.keys(interviewExperience).some(key =>
       String(interviewExperience[key]).toLowerCase().includes(searchTerm.toLowerCase())
     );
@@ -81,7 +139,10 @@ const InterviewExperiencesComponent = () => {
     <div data-testid='interviewExperiencesComponent'>
       <h1>Interview Experiences Component</h1>
       <input id='search' type='text' value={searchTerm} placeholder='Search' onChange={handleSearch}/>
-      <InterviewExperienceForm handleSubmit={postInterviewExperienceSubmitHandler} /> 
+      <InterviewExperienceForm handleSubmit={postInterviewExperienceSubmitHandler} />
+      
+      
+
       {loading ? (
         <p>loading...</p>
       ) : error ? (
@@ -114,14 +175,17 @@ const InterviewExperiencesComponent = () => {
                 </p>
                 <p>Likes:{likes}</p>
                 <br />
-                <p className='view-comments' onClick={() => getAllInterviewRepliesHandleClick(id)}>View Comments</p>
-                {viewComments && interviewRepliesDetails.length ? interviewRepliesDetails.map((reply:any) => { <p>{reply.reply}</p> }) : null}
-              
+                <p className='view-comments' onClick={() => setSelectedInterviewReplies({ replyId: id })}>View Comments</p>
               </li>
             );
           })}  
         </ul>
       )}
+      {interviewReplies.map((reply: any) => {
+                  return (
+                    <p> { reply.reply }</p>
+                  )
+                })}
     </div>
   );
 };
